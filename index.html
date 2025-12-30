@@ -11,12 +11,16 @@
   margin-bottom: 20px;
   }
   
+    
+    
   
   * {
   box-sizing: border-box;
 }
 
 body {
+
+  
   overflow-x: hidden;
   font-family: Arial, sans-serif;
   background: #0f2027;
@@ -24,6 +28,7 @@ body {
   text-align: center;
   padding: 20px;
   margin: 0;
+  
 }
 
 h2 {
@@ -108,11 +113,16 @@ button:hover {
 </head>
 
 <body>
+  
+  
 
 <h2>🎤 Voice AI Assistant</h2>
 
+
+
 <button class="mic" id="mic" onclick="startAI()">🎤</button>
 <h3>Press icon</h3>
+
 <div class="box">
   <p><b>You said:</b> <span id="said"></span></p>
   <p><b>Response:</b></p>
@@ -150,7 +160,7 @@ function startAI() {
     /* DATE */
     if (text.includes("date")) {
       let d = new Date().toDateString();
-      let ans = "Aaj ki date " + d;
+      let ans = "Today" + d;
       info.innerText = ans;
       speak(ans);
       micBtn.classList.remove("active");
@@ -178,7 +188,7 @@ function startAI() {
     try {
       if (math.match(/^[0-9+\-*/(). ]+$/)) {
         let result = eval(math);
-        let ans = "Answer hai " + result;
+        let ans = "Answer is " + result;
         info.innerText = ans;
         speak(ans);
         micBtn.classList.remove("active");
@@ -198,7 +208,7 @@ function startAI() {
         .then(r => r.json())
         .then(loc => {
           if (!loc.results) {
-            info.innerText = "City nahi mili";
+            info.innerText = "location not found please try again";
             return;
           }
           let lat = loc.results[0].latitude;
@@ -209,7 +219,7 @@ function startAI() {
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
             .then(r => r.json())
             .then(w => {
-              let ans = `${place}, ${country} ka temperature ${w.current_weather.temperature}°C hai`;
+              let ans = `${place}, ${country}  temperature ${w.current_weather.temperature}°C `;
               info.innerText = ans;
               speak(ans);
             });
@@ -222,7 +232,7 @@ function startAI() {
     fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + text.replace(/\s+/g, "_"))
       .then(res => res.json())
       .then(data => {
-        let ans = data.extract || "Information nahi mili";
+        let ans = data.extract || "Information not found please try again";
         info.innerText = ans;
         speak(ans);
         micBtn.classList.remove("active");
@@ -247,5 +257,3 @@ function webSearch() {
 
 </body>
 </html>
-
-
