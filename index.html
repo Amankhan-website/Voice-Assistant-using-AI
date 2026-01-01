@@ -4,225 +4,215 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Voice AI Assistant</title>
-
 <style>
-  .manu{
-    margin-top: 50px;
-    align-items: center;
-    
-    
-
+  * { box-sizing: border-box; }
+  body {
+    font-family: Arial, sans-serif;
+    background: #0f2027;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+    overflow-x: hidden;
   }
-  
-  h3{
-     font-size: 20px;
-  margin-bottom: 20px;
+
+  h2 { font-size: 26px; margin-bottom: 20px; }
+
+  /* INFO BOX */
+  .box {
+    margin-top: 25px;
+    background: rgba(255,255,255,0.1);
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
   }
-  
-    
-    
-  
-  * {
-  box-sizing: border-box;
-}
+  .box p { font-size: 16px; }
 
-body {
+  /* INPUT */
+  input {
+    width: 100%;
+    max-width: 320px;
+    padding: 12px 16px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: 2px solid #4caf50;
+    outline: none;
+    background: #111;
+    color: #fff;
+    margin-bottom: 10px;
+  }
 
-  
-  overflow-x: hidden;
-  font-family: Arial, sans-serif;
-  background: #0f2027;
-  color: white;
-  text-align: center;
-  padding: 20px;
-  margin: 0;
-  
-}
+  /* BUTTONS */
+  button {
+    padding: 12px 24px;
+    font-size: 16px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  button:hover { transform: scale(1.05); }
 
-h2 {
-  font-size: 26px;
-  margin-bottom: 20px;
-}
+  #onBtn {
+    background: linear-gradient(135deg, #00e676, #1de9b6);
+    color: black;
+  }
 
-/* MIC BUTTON */
-.mic {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  border: none;
-  font-size: 32px;
-  cursor: pointer;
-  background: red;
-  color: white;
-  box-shadow: 0 0 20px red;
-}
+  #offBtn {
+    background: linear-gradient(135deg, #ff1744, #ff5252);
+    color: white;
+    margin-left: 10px;
+  }
 
-.mic.active {
-  background: green;
-  box-shadow: 0 0 25px green;
-}
+  /* STATUS */
+  #status { margin-top:10px; font-weight:bold; color:#ff5252; }
 
-/* INFO BOX */
-.box {
-  margin-top: 25px;
-  background: rgba(255,255,255,0.1);
-  padding: 15px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  word-wrap: break-word;
-}
-
-.box p {
-  font-size: 16px;
-}
-
-/* INPUTS */
-input {
-  width: 100%;
-  max-width: 320px;
-  padding: 12px 16px;
-  font-size: 16px;
-  border-radius: 25px;
-  border: 2px solid #4caf50;
-  outline: none;
-  background: #111;
-  color: #fff;
-  margin-bottom: 10px;
-}
-
-/* BUTTONS */
-button {
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 25px;
-  border: none;
-  cursor: pointer;
-  background: linear-gradient(135deg, #00e676, #1de9b6);
-  color: #000;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-button:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #00e676;
-}
-
-/* MOBILE */
-@media (max-width: 600px) {
-  h2 { font-size: 22px; }
-  .mic { width: 70px; height: 70px; font-size: 28px; }
-  .box p { font-size: 15px; }
-}
+  /* MOBILE */
+  @media (max-width: 600px) {
+    h2 { font-size: 22px; }
+    .box p { font-size: 15px; }
+  }
 </style>
 </head>
-
 <body>
-  
-  
 
 <h2>🎤 Voice AI Assistant</h2>
 
+<!-- ON / OFF buttons -->
+<div style="margin:20px;">
+  <button id="onBtn" onclick="startAI()">🔊 ON</button>
+  <button id="offBtn" onclick="stopAI()">🔇 OFF</button>
+</div>
+<p id="status">Status: OFF</p>
 
-
-<button class="mic" id="mic" onclick="startAI()">🎤</button>
-<h3>Press icon</h3>
-
+<!-- INFO BOX -->
 <div class="box">
   <p><b>You said:</b> <span id="said"></span></p>
   <p><b>Response:</b></p>
   <p id="info"></p>
 </div>
 
+<!-- WEB SEARCH -->
 <div style="margin-top:30px;">
   <input id="searchInput" placeholder="Search on web...">
   <br><br>
   <button onclick="webSearch()">Search Web</button>
 </div>
-<div class="manu"> 
-<h4>Weather Update</h4>
-<h4> Current Date</h4>
 
-<h4> basic mathmatics questions</h4>
-<h4> All Bollywood actors search</h4>
+<!-- MANU / OPTIONS -->
+<div class="manu" style="margin-top:30px;">
+  <h4>Weather Update</h4>
+  <h4>Current Date & Time</h4>
+  <h4>Basic Math Questions</h4>
+  <h4>All Bollywood Actors Search</h4>
 </div>
+
 <script>
-const micBtn = document.getElementById("mic");
+ 
 const said = document.getElementById("said");
 const info = document.getElementById("info");
+let recognition;
+let listening = false;
 
-function speak(text) {
+// Speak function
+function speak(text){
   let msg = new SpeechSynthesisUtterance(text);
-  msg.lang = "en-IN";
+
+  // language detect
+  if(/[^\u0000-\u007F]+/.test(text)){
+    // agar Hindi characters hain
+    msg.lang = "hi-IN";
+  } else {
+    msg.lang = "en-IN";
+  }
+
   window.speechSynthesis.speak(msg);
 }
 
+// START AI
 function startAI() {
-  micBtn.classList.add("active");
+  if(listening) return;
 
-  const recognition = new webkitSpeechRecognition();
+  listening = true;
+  document.getElementById("status").innerText = "Status: Listening...";
+  document.getElementById("status").style.color = "#00e676";
+
+  recognition = new webkitSpeechRecognition();
   recognition.lang = "en-IN";
   recognition.start();
 
-  recognition.onresult = function(event) {
+  recognition.onresult = function(event){
     let text = event.results[0][0].transcript.toLowerCase();
     said.innerText = text;
 
-    /* DATE */
-    if (text.includes("date")) {
+    // ===== PREDEFINED QA LOGIC =====
+const predefinedQA = {
+  "who is amitabh bachchan": "Amitabh Bachchan is a legendary Bollywood actor.",
+  "salman khan": "Salman Khan is a popular Bollywood actor known for many hit films.",
+  "kya tum smart ho": "Haan, main ek AI assistant hoon aur questions ka jawab deta hoon.",
+  "tumhara naam kya hai": "My name is voice assistent.",
+  "mera naam kya hai": "Tumhara naam Aman hai."
+};
+
+// check if user input matches predefined question
+if(predefinedQA[text]){
+  let ans = predefinedQA[text];
+  info.innerText = ans;
+  speak(ans);
+  micBtn.classList.remove("active");
+  return;
+}
+
+
+    // DATE
+    if(text.includes("date")){
       let d = new Date().toDateString();
-      let ans = "Today" + d;
+      let ans = "Today is " + d;
       info.innerText = ans;
       speak(ans);
-      micBtn.classList.remove("active");
       return;
     }
 
-    /* TIME */
-    if (text.includes("time")) {
+    // TIME
+    if(text.includes("time")){
       let t = new Date().toLocaleTimeString();
-      let ans = "Abhi time " + t;
+      let ans = "Current time is " + t;
       info.innerText = ans;
       speak(ans);
-      micBtn.classList.remove("active");
       return;
     }
 
-    /* MATH */
-    let math = text
-      .replace(/what is|calculate|kitna hota hai|equals|\?/gi, "")
-      .replace(/plus/gi, "+")
-      .replace(/minus/gi, "-")
-      .replace(/into|multiply|multiplied by/gi, "*")
-      .replace(/divide|divided by/gi, "/");
-
-    try {
-      if (math.match(/^[0-9+\-*/(). ]+$/)) {
+    // MATH
+    let math = text.replace(/what is|calculate|kitna hota hai|equals|\?/gi,"")
+                   .replace(/plus/gi,"+")
+                   .replace(/minus/gi,"-")
+                   .replace(/into|multiply|multiplied by/gi,"*")
+                   .replace(/divide|divided by/gi,"/");
+    try{
+      if(math.match(/^[0-9+\-*/(). ]+$/)){
         let result = eval(math);
         let ans = "Answer is " + result;
         info.innerText = ans;
         speak(ans);
-        micBtn.classList.remove("active");
         return;
       }
-    } catch(e){}
+    }catch(e){}
 
-    /* TEMPERATURE */
-    if (text.includes("temperature") || text.includes("weather")) {
-      let city = text.replace("temperature","")
-                     .replace("weather","")
-                     .replace("in","")
-                     .trim();
-      if (city === "") city = "delhi";
+    // TEMPERATURE / WEATHER
+    if(text.includes("temperature") || text.includes("weather")){
+      let city = text.replace("temperature","").replace("weather","").replace("in","").trim();
+      if(city==="") city="delhi";
 
       fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`)
-        .then(r => r.json())
-        .then(loc => {
-          if (!loc.results) {
-            info.innerText = "location not found please try again";
+        .then(r=>r.json())
+        .then(loc=>{
+          if(!loc.results){
+            info.innerText="Location not found, try again";
             return;
           }
           let lat = loc.results[0].latitude;
@@ -231,43 +221,45 @@ function startAI() {
           let country = loc.results[0].country;
 
           fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`)
-            .then(r => r.json())
-            .then(w => {
-              let ans = `${place}, ${country}  temperature ${w.current_weather.temperature}°C `;
-              info.innerText = ans;
+            .then(r=>r.json())
+            .then(w=>{
+              let ans = `${place}, ${country} temperature ${w.current_weather.temperature}°C`;
+              info.innerText=ans;
               speak(ans);
             });
         });
-      micBtn.classList.remove("active");
       return;
     }
 
-    /* WIKIPEDIA */
-    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + text.replace(/\s+/g, "_"))
-      .then(res => res.json())
-      .then(data => {
-        let ans = data.extract || "Information not found please try again";
-        info.innerText = ans;
+    // WIKIPEDIA
+    fetch("https://en.wikipedia.org/api/rest_v1/page/summary/" + text.replace(/\s+/g,"_"))
+      .then(res=>res.json())
+      .then(data=>{
+        let ans = data.extract || "Information not found, please try again";
+        info.innerText=ans;
         speak(ans);
-        micBtn.classList.remove("active");
       })
-      .catch(() => {
-        info.innerText = "Error";
-        micBtn.classList.remove("active");
-      });
+      .catch(()=>{ info.innerText="Error"; });
   };
 
-  recognition.onerror = function() {
-    micBtn.classList.remove("active");
-  };
+  recognition.onerror = function(){ stopAI(); };
 }
 
-function webSearch() {
+// STOP AI
+function stopAI(){
+  if(recognition) recognition.stop();
+  listening=false;
+  document.getElementById("status").innerText="Status: OFF";
+  document.getElementById("status").style.color="#ff5252";
+  window.speechSynthesis.cancel();
+}
+
+// WEB SEARCH
+function webSearch(){
   let q = document.getElementById("searchInput").value;
-  if (q.trim() === "") return alert("Kuch likho");
-  window.open("https://www.google.com/search?q=" + encodeURIComponent(q), "_blank");
+  if(q.trim()==="") return alert("Type something to search");
+  window.open("https://www.google.com/search?q="+encodeURIComponent(q),"_blank");
 }
 </script>
-
 </body>
 </html>
